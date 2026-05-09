@@ -1,23 +1,25 @@
 # StudyTwin AI
 
-Ứng dụng Next.js cho trợ lý học tập cá nhân hóa (Learning DNA), dùng Ollama self-hosted.
+Chạy **không cần Docker**. Chỉ cần 1 lệnh shell.
 
-## Chạy nhanh
+## One-command run
 
 ```bash
 cp .env.example .env
-npm install
-npm run dev:full
+bash scripts/run.sh
 ```
 
-`dev:full` sẽ tự chạy `docker compose up -d ollama`, chờ service sẵn sàng và pull model `qwen2.5:7b-instruct` rồi bật web app.
+Script sẽ tự động:
+1. Cài Ollama native (nếu chưa có)
+2. Start `ollama serve`
+3. Pull model `qwen2.5:7b-instruct`
+4. Cài npm dependencies (nếu thiếu)
+5. Start Next.js web app (`http://localhost:3000`)
 
-## API nội bộ
-- POST `/api/ai/generate-questions`
-- POST `/api/ai/generate-adaptive-questions`
-- POST `/api/ai/analyze-test`
-- POST `/api/ai/global-conclusion`
-- POST `/api/ai/generate-flashcards`
-- POST `/api/ai/chat`
-
-Tất cả gọi Ollama qua server route, không lộ endpoint AI ở frontend.
+## Nội bộ API (server-side)
+- `/api/ai/generate-questions`
+- `/api/ai/generate-adaptive-questions`
+- `/api/ai/analyze-test`
+- `/api/ai/global-conclusion`
+- `/api/ai/generate-flashcards`
+- `/api/ai/chat`
