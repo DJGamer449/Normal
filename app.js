@@ -1,68 +1,22 @@
-const subjects = {
-  math: { name: "Toán", questions: [
-    { id:1, q:"2x+5=15 => x=?", o:["10","5","-5","7.5"], a:1, skill:"Biến đổi công thức", err:"thiếu kiến thức" },
-    { id:2, q:"Điều kiện đúng của x>2 và x<8?", o:["2<x<8","x>8","x<2","x=2 hoặc 8"], a:0, skill:"Nhận diện điều kiện", err:"đọc đề chưa kỹ" },
-    { id:3, q:"20% của 150 là?", o:["20","25","30","35"], a:2, skill:"Tính phần trăm", err:"thiếu kiến thức" },
-    { id:4, q:"Bước đầu khi giải bài mới?", o:["Làm ngẫu nhiên","Phân tích dữ kiện","Bỏ qua","Chọn đáp án dài"], a:1, skill:"Tư duy giải", err:"tư duy giải chưa đúng" },
-    { id:5, q:"Tam giác 3 cạnh bằng nhau là?", o:["Vuông","Cân","Đều","Tù"], a:2, skill:"Khái niệm nền", err:"thiếu kiến thức" }
-  ]}
-};
-let token = "";
-let currentSubject = "math";
-
-async function api(path, method="GET", body=null) {
-  const res = await fetch(path, { method, headers: {"Content-Type":"application/json", ...(token? {Authorization:`Bearer ${token}`}:{})}, body: body ? JSON.stringify(body):null });
-  return res.json();
-}
-
-function renderQuiz() {
-  const qs = subjects[currentSubject].questions;
-  quiz.innerHTML = qs.map(q=>`<div class='question'><b>${q.id}.</b> ${q.q}${q.o.map((opt,i)=>`<label class='answer'><input type='radio' name='q${q.id}' value='${i}'> ${opt}</label>`).join("")}</div>`).join("");
-}
-
-function analyze() {
-  const qs = subjects[currentSubject].questions;
-  let c = 0; const wrong = [];
-  qs.forEach(q=>{ const p=document.querySelector(`input[name='q${q.id}']:checked`); if (p && Number(p.value)===q.a) c++; else wrong.push(q); });
-  const top = wrong[0]?.skill || "Ổn";
-  return { score: Math.round(c/qs.length*100), wrong, top };
-}
-
-function renderReport(r) {
-  report.innerHTML = `<h3>Kết quả: ${r.score}%</h3><p>Bạn yếu nhất ở: <b>${r.top}</b>.</p><p>Gợi ý: Ôn 12 phút + 5 bài dễ.</p><h4>Kế hoạch ABC/XYZ</h4><ul><li>A: Ôn ${r.top}</li><li>B: 5 bài cơ bản</li><li>X/Y/Z: Hôm nay / 3 ngày / 7 ngày test lại</li></ul><h4>Flashcard nhanh</h4><ul>${r.wrong.slice(0,3).map(w=>`<li>${w.skill}: tránh lỗi ${w.err}</li>`).join("") || "<li>Rất tốt!</li>"}</ul>`;
-  api('/api/attempt','POST',{subject: currentSubject, score_pct: r.score});
-}
-
-async function loadMe(){
-  const me = await api('/api/me');
-  if(!me.ok) return;
-  appCard.hidden=false; authCard.hidden=true;
-  hello.textContent = `Xin chào ${me.user.full_name || me.user.username} (${me.user.student_class || ''})`;
-  streakBadge.textContent = `Streak: ${me.streak.count}`;
-  history.innerHTML = `<h4>Lịch sử</h4><ul>${me.history.map(h=>`<li>${h.subject}: ${h.score_pct}% (${h.created_at.slice(0,10)})</li>`).join('')}</ul>`;
-}
-
-document.getElementById('registerBtn').onclick = async()=>{
-  const r = await api('/api/register','POST',{username:username.value,password:password.value,full_name:fullName.value,student_class:studentClass.value});
-  authMsg.textContent = r.ok ? 'Đăng ký thành công, mời đăng nhập' : r.error;
-};
-
-document.getElementById('loginBtn').onclick = async()=>{
-  const r = await api('/api/login','POST',{username:username.value,password:password.value});
-  if(!r.ok){ authMsg.textContent=r.error; return; }
-  token=r.token; await loadMe();
-};
-
-document.getElementById('checkinBtn').onclick = async()=>{
-  const r = await api('/api/checkin','POST',{date:new Date().toISOString().slice(0,10)});
-  streakBadge.textContent = `Streak: ${r.count}`;
-  alert(r.message);
-};
-
-document.getElementById('analyzeBtn').onclick = ()=> renderReport(analyze());
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  subject.innerHTML = `<option value='math'>Toán</option>`;
-  subject.onchange=(e)=>{currentSubject=e.target.value; renderQuiz();};
-  renderQuiz();
-});
+const subjects={math:{name:'Toán lớp 10'},english:{name:'Tiếng Anh'},cs:{name:'Tin học'},physics:{name:'Vật lý'},coding:{name:'Lập trình cơ bản'}};
+const questionBank={math:[['Hàm số y=x^2 có là hàm số?',1,['Không','Có']],['Điều kiện mẫu số khác?',1,['=0','≠0']],['20% của 200?',1,['30','40']],['Bước đầu giải bài?',1,['Đoán','Đọc điều kiện']],['x>1 và x<3 ?',0,['1<x<3','x>3']]],english:[['She __ to school',1,['go','goes']],['Synonym happy',0,['glad','sad']],['If I __ rich',1,['am','were']],['Read question means',0,['find keyword','skip']],['Verb + s/es for',0,['he/she/it','I/you']]],cs:[['CPU là?',0,['bộ xử lý','ram']],['Binary của 2?',1,['11','10']],['HTML là?',0,['markup','database']],['Bug là?',0,['lỗi','tính năng']],['Loop là?',0,['vòng lặp','biến']]],physics:[['Đơn vị lực',0,['N','J']],['F=ma?',0,['đúng','sai']],['1kN=',1,['100N','1000N']],['Ma sát tăng thì',1,['dễ hơn','khó hơn']],['v=s/t?',0,['đúng','sai']]],coding:[['if dùng để?',0,['rẽ nhánh','lặp']],['for là?',1,['hàm','vòng lặp']],['== so sánh?',0,['đúng','sai']],['bug fix là?',0,['sửa lỗi','thêm lỗi']],['input là?',0,['nhập dữ liệu','xuất']] ]};
+let token='',current='math',lastResult=null;
+const api=async(p,m='GET',b=null)=>(await fetch(p,{method:m,headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:b?JSON.stringify(b):null})).json();
+function renderSubjects(){subject.innerHTML=Object.entries(subjects).map(([k,v])=>`<option value='${k}'>${v.name}</option>`).join('');subject.onchange=e=>{current=e.target.value;renderQuiz();};}
+function renderQuiz(){quiz.innerHTML=questionBank[current].map((q,i)=>`<div class='question'><b>${i+1}.</b> ${q[0]}<label class='answer'><input type='radio' name='q${i}' value='0'>${q[2][0]}</label><label class='answer'><input type='radio' name='q${i}' value='1'>${q[2][1]}</label></div>`).join('');}
+function analyze(){let c=0,errors=[];questionBank[current].forEach((q,i)=>{const p=document.querySelector(`input[name='q${i}']:checked`);if(p&&Number(p.value)===q[1])c++;else errors.push(i);});
+const pct=Math.round(c/questionBank[current].length*100); const dominant=pct<60?'chưa hiểu kiến thức':pct<80?'đọc thiếu dữ kiện':'cẩn thận bước giải';
+const weak=pct<60?'Kiến thức nền tảng':pct<80?'Đọc hiểu đề':'Áp dụng công thức';
+const map={knowledge:Math.max(40,pct-5),reading:Math.max(35,pct-15),logic:Math.min(95,pct+10),apply:Math.max(30,pct-20),speed:Math.max(45,pct-10),memory:Math.max(50,pct-8),careful:Math.max(35,pct-18)};
+return {pct,dominant,weak,map};}
+function renderAll(r){lastResult=r; report.innerHTML=`<h4>AI phân tích lỗi sai</h4><p>Bạn nắm tốt một phần nhưng yếu ở <b>${r.weak}</b>. Sai chủ yếu do <b>${r.dominant}</b>.</p><h4>Lộ trình 7 ngày</h4><ol><li>Ngày 1: Ôn khái niệm.</li><li>Ngày 2: 5 bài nhận diện.</li><li>Ngày 3: Luyện lỗi sai thường gặp.</li><li>Ngày 4: Bài trung bình.</li><li>Ngày 5: Flashcard.</li><li>Ngày 6: Bài tổng hợp.</li><li>Ngày 7: Kiểm tra lại.</li></ol><p><b>Adaptive:</b> ${r.pct>=80?'Tăng độ khó lên trung bình/nâng cao.':'Quay lại bài nền tảng trước khi tăng khó.'}</p>`;
+skillMap.innerHTML=`<tr><th>Kỹ năng</th><th>Mức độ</th></tr>${[['Kiến thức nền',r.map.knowledge],['Đọc hiểu đề',r.map.reading],['Tư duy logic',r.map.logic],['Áp dụng công thức',r.map.apply],['Tốc độ làm bài',r.map.speed],['Ghi nhớ',r.map.memory],['Cẩn thận',r.map.careful]].map(x=>`<tr><td>${x[0]}</td><td>${x[1]}%</td></tr>`).join('')}`;
+dna.innerHTML=`<p><b>Learning DNA:</b><br>Điểm mạnh: ${r.map.logic>=80?'tư duy logic':'kiên trì luyện tập'}<br>Điểm yếu: ${r.weak}<br>Lỗi thường gặp: ${r.dominant}<br>Phong cách hợp: học từng bước + ví dụ trực quan<br>Ưu tiên hôm nay: luyện 5 câu đọc điều kiện đề trước.</p>`;
+api('/api/attempt','POST',{subject:current,score_pct:r.pct,weak_skill:r.weak,dominant_error:r.dominant});}
+chatBtn.onclick=()=>{const q=chatInput.value.toLowerCase(); if(!lastResult){chatOut.textContent='Hãy làm bài test trước nhé.';return;} if(q.includes('hôm nay')) chatOut.textContent='Hôm nay: ôn 12 phút phần yếu nhất + 5 bài cơ bản.'; else if(q.includes('yếu')) chatOut.textContent=`Em yếu nhất ở ${lastResult.weak}.`; else if(q.includes('5 bài')) chatOut.textContent='Đã tạo gợi ý: 5 bài cùng dạng từ dễ đến trung bình.'; else chatOut.textContent='Mình sẽ giải thích lại dễ hiểu hơn theo từng bước nhé.';};
+async function loadMe(){const me=await api('/api/me'); if(!me.ok)return; authCard.hidden=true; appCard.hidden=false; hello.textContent=`Xin chào ${me.user.full_name} (${me.user.student_class})`; streakBadge.textContent=`Streak: ${me.streak.count}`; history.innerHTML='<ul>'+me.history.map(h=>`<li>${h.subject}: ${h.score_pct}% - yếu: ${h.weak_skill}</li>`).join('')+'</ul>'; const t=await api('/api/teacher/overview'); teacherOverview.innerHTML='<ul>'+t.insights.slice(0,5).map(i=>`<li>${i.subject} | ${i.weak_skill} | ${i.dominant_error} (${i.n})</li>`).join('')+'</ul>';}
+registerBtn.onclick=async()=>{const r=await api('/api/register','POST',{username:username.value,password:password.value,full_name:fullName.value,student_class:studentClass.value}); authMsg.textContent=r.ok?'Đăng ký thành công':'Lỗi: '+r.error;};
+loginBtn.onclick=async()=>{const r=await api('/api/login','POST',{username:username.value,password:password.value}); if(!r.ok){authMsg.textContent=r.error;return;} token=r.token; loadMe();};
+checkinBtn.onclick=async()=>{const r=await api('/api/checkin','POST',{date:new Date().toISOString().slice(0,10)}); streakBadge.textContent=`Streak: ${r.count}`;};
+analyzeBtn.onclick=()=>renderAll(analyze());
+document.addEventListener('DOMContentLoaded',()=>{renderSubjects();renderQuiz();});

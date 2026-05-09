@@ -1,15 +1,17 @@
-# StudyTwin AI - Server-based personalized web app
+# StudyTwin AI - Personalized Learning Platform
 
-Bạn host trên server để học sinh tạo **tài khoản riêng**, đăng nhập và có dữ liệu cá nhân hóa.
+Phiên bản này tập trung đúng các tính năng hội đồng chấm đồ án quan tâm:
+- Kiểm tra năng lực đầu vào theo môn/chủ đề (Toán, Anh, Tin, Lý, Lập trình).
+- Bản đồ năng lực cá nhân theo 7 trục kỹ năng.
+- AI phân tích lỗi sai theo nguyên nhân.
+- Lộ trình học 7 ngày cá nhân hóa.
+- Adaptive learning (tăng/giảm độ khó theo kết quả).
+- Flashcard + nhắc ôn 1/3/7 ngày (thể hiện trong roadmap).
+- Chat với StudyTwin.
+- Learning DNA.
+- Teacher overview (demo lớp học: lỗi phổ biến/nhóm yếu).
 
-## Có gì trong phiên bản này
-- Đăng ký / đăng nhập tài khoản học sinh.
-- Lưu hồ sơ cá nhân (họ tên, lớp).
-- Keep streak theo từng tài khoản.
-- Lưu lịch sử điểm theo từng tài khoản.
-- Quiz + báo cáo + kế hoạch ABC/XYZ.
-
-## Chạy trên server
-1. Cài dependency: `pip install flask`
-2. Chạy app: `python3 server.py`
-3. Deploy lên VPS/cloud với Nginx + Gunicorn (khuyến nghị production).
+## Deploy server
+- `pip install flask`
+- `python3 server.py`
+- Deploy production: Gunicorn + Nginx.
