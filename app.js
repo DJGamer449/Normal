@@ -1,182 +1,96 @@
-const competencyFramework = {
-  math: {
-    name: "Toán",
-    skills: ["Biến đổi công thức", "Nhận diện điều kiện đề", "Tư duy giải quyết vấn đề", "Khái niệm nền tảng"]
-  },
-  physics: {
-    name: "Vật lý",
-    skills: ["Đọc dữ kiện", "Chọn công thức", "Đổi đơn vị", "Lập luận hiện tượng"]
-  }
-};
-
-const quizBank = {
-  math: [
-    { id: 1, text: "Giải phương trình: 2x + 5 = 15", options: ["x = 10", "x = 5", "x = -5", "x = 7.5"], answer: 1, skill: "Biến đổi công thức", errorType: "knowledge", concept: "Chuyển vế và chia hai vế", level: 1 },
-    { id: 2, text: "Nếu x > 2 và x < 8, điều kiện đúng là:", options: ["2 < x < 8", "x > 8", "x < 2", "x = 2 hoặc x = 8"], answer: 0, skill: "Nhận diện điều kiện đề", errorType: "reading", concept: "Đọc điều kiện kép", level: 1 },
-    { id: 3, text: "Tam giác có 3 cạnh bằng nhau là:", options: ["Tam giác vuông", "Tam giác cân", "Tam giác đều", "Tam giác tù"], answer: 2, skill: "Khái niệm nền tảng", errorType: "knowledge", concept: "Phân loại tam giác", level: 1 },
-    { id: 4, text: "Bài toán yêu cầu chọn phương pháp nhanh nhất. Em nên:", options: ["Làm thử ngẫu nhiên", "Phân tích dữ kiện rồi chọn công thức", "Bỏ qua", "Chọn đáp án dài nhất"], answer: 1, skill: "Tư duy giải quyết vấn đề", errorType: "thinking", concept: "Quy trình chọn chiến lược", level: 2 },
-    { id: 5, text: "20% của 150 là:", options: ["20", "25", "30", "35"], answer: 2, skill: "Biến đổi công thức", errorType: "knowledge", concept: "Tính phần trăm", level: 1 }
-  ],
-  physics: [
-    { id: 1, text: "Đơn vị của lực là:", options: ["W", "N", "J", "Pa"], answer: 1, skill: "Đổi đơn vị", errorType: "knowledge", concept: "Đơn vị SI", level: 1 },
-    { id: 2, text: "Công thức tính vận tốc trung bình:", options: ["v = s/t", "v = t/s", "v = s*t", "v = s+t"], answer: 0, skill: "Chọn công thức", errorType: "knowledge", concept: "Công thức cơ bản", level: 1 },
-    { id: 3, text: "Đề cho m=2kg, a=3m/s². Lực F bằng:", options: ["5N", "6N", "1.5N", "9N"], answer: 1, skill: "Đọc dữ kiện", errorType: "reading", concept: "Định luật II Newton", level: 2 },
-    { id: 4, text: "Khi ma sát tăng, chuyển động vật:", options: ["Dễ tăng tốc", "Khó chuyển động hơn", "Không đổi", "Luôn nhanh hơn"], answer: 1, skill: "Lập luận hiện tượng", errorType: "thinking", concept: "Ma sát", level: 2 },
-    { id: 5, text: "1kN bằng:", options: ["10N", "100N", "1000N", "10000N"], answer: 2, skill: "Đổi đơn vị", errorType: "knowledge", concept: "Bội số đơn vị", level: 1 }
-  ]
-};
-
-const labelError = {
-  knowledge: "Thiếu kiến thức nền",
-  reading: "Đọc đề/chọn điều kiện chưa chính xác",
-  thinking: "Chiến lược tư duy chưa phù hợp"
+const subjects = {
+  math: { name: "Toán", questions: [
+    { id:1, q:"2x+5=15 => x=?", o:["10","5","-5","7.5"], a:1, skill:"Biến đổi công thức", err:"knowledge" },
+    { id:2, q:"Điều kiện đúng của x>2 và x<8?", o:["2<x<8","x>8","x<2","x=2 hoặc 8"], a:0, skill:"Nhận diện điều kiện", err:"reading" },
+    { id:3, q:"20% của 150 là?", o:["20","25","30","35"], a:2, skill:"Tính phần trăm", err:"knowledge" },
+    { id:4, q:"Bước đầu khi giải bài mới?", o:["Làm ngẫu nhiên","Phân tích dữ kiện","Bỏ qua","Chọn đáp án dài"], a:1, skill:"Tư duy giải", err:"thinking" },
+    { id:5, q:"Tam giác 3 cạnh bằng nhau là?", o:["Vuông","Cân","Đều","Tù"], a:2, skill:"Khái niệm nền", err:"knowledge" }
+  ]},
+  english: { name: "Tiếng Anh", questions: [
+    { id:1, q:"She ___ to school every day.", o:["go","goes","going","gone"], a:1, skill:"Chia động từ", err:"knowledge" },
+    { id:2, q:"Synonym of 'happy'", o:["sad","angry","glad","cold"], a:2, skill:"Từ vựng", err:"knowledge" },
+    { id:3, q:"Choose correct: If I ___ rich, I would travel.", o:["am","was","were","be"], a:2, skill:"Câu điều kiện", err:"knowledge" },
+    { id:4, q:"Read question carefully before answering means:", o:["skip quickly","find keywords","guess","translate all"], a:1, skill:"Đọc hiểu đề", err:"reading" },
+    { id:5, q:"Best writing strategy first step:", o:["write immediately","outline ideas","copy sample","ignore prompt"], a:1, skill:"Tư duy viết", err:"thinking" }
+  ]}
 };
 
 let currentSubject = "math";
+const errorLabel = { knowledge:"thiếu kiến thức", reading:"đọc đề chưa kỹ", thinking:"tư duy giải chưa đúng" };
+
+function initSubjects() {
+  const s = document.getElementById("subject");
+  s.innerHTML = Object.entries(subjects).map(([k,v]) => `<option value='${k}'>${v.name}</option>`).join("");
+  s.addEventListener("change", e => { currentSubject = e.target.value; renderQuiz(); });
+}
 
 function renderQuiz() {
   const root = document.getElementById("quiz");
-  root.innerHTML = "";
-  quizBank[currentSubject].forEach((q) => {
-    const block = document.createElement("div");
-    block.className = "question";
-    block.innerHTML = `<h4>Câu ${q.id}. ${q.text}</h4>${q.options.map((opt, i) => `<label class='answer'><input type='radio' name='q${q.id}' value='${i}'/> ${opt}</label>`).join("")}`;
-    root.appendChild(block);
-  });
+  root.innerHTML = subjects[currentSubject].questions.map(q => `
+    <div class='question'>
+      <b>Câu ${q.id}.</b> ${q.q}
+      ${q.o.map((opt,i)=>`<label class='answer'><input type='radio' name='q${q.id}' value='${i}'> ${opt}</label>`).join("")}
+    </div>`).join("");
 }
 
-function collectAnswers() {
-  return quizBank[currentSubject].map((q) => {
-    const picked = document.querySelector(`input[name='q${q.id}']:checked`);
-    return picked ? Number(picked.value) : null;
+function analyze() {
+  const qs = subjects[currentSubject].questions;
+  let correct = 0; const wrong = [];
+  qs.forEach(q => {
+    const pick = document.querySelector(`input[name='q${q.id}']:checked`);
+    if (!pick) return wrong.push({...q, picked:null});
+    Number(pick.value) === q.a ? correct++ : wrong.push({...q, picked:Number(pick.value)});
   });
+  const weak = {}; const err = {knowledge:0, reading:0, thinking:0};
+  wrong.forEach(w=>{ weak[w.skill]=(weak[w.skill]||0)+1; err[w.err]++; });
+  const topWeak = Object.entries(weak).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  const dominant = Object.entries(err).sort((a,b)=>b[1]-a[1])[0][0];
+  return {correct,total:qs.length,pct:Math.round(correct/qs.length*100),topWeak,dominant,wrong};
 }
 
-function analyze(answers) {
-  const quizData = quizBank[currentSubject];
-  const mistakes = [];
-  let correct = 0;
-
-  answers.forEach((a, idx) => {
-    const q = quizData[idx];
-    if (a === q.answer) correct += 1;
-    else mistakes.push({ ...q, picked: a });
-  });
-
-  const weakSkills = {};
-  const errorBuckets = { knowledge: 0, reading: 0, thinking: 0 };
-  mistakes.forEach((m) => {
-    weakSkills[m.skill] = (weakSkills[m.skill] || 0) + 1;
-    errorBuckets[m.errorType] += 1;
-  });
-
-  const topWeak = Object.entries(weakSkills).sort((a, b) => b[1] - a[1]).map(([s]) => s);
-  const dominantError = Object.entries(errorBuckets).sort((a, b) => b[1] - a[1])[0][0];
-  const scorePct = Math.round((correct / quizData.length) * 100);
-  const proficiency = scorePct >= 80 ? "Khá" : scorePct >= 60 ? "Trung bình" : "Cần hỗ trợ";
-
-  return { correct, total: quizData.length, scorePct, proficiency, mistakes, topWeak, dominantError };
-}
-
-function render(result) {
-  const name = document.getElementById("studentName").value || "Học sinh";
-  const clazz = document.getElementById("studentClass").value || "N/A";
-  const quizData = quizBank[currentSubject];
-
+function renderReport(r) {
   document.getElementById("report").hidden = false;
   document.getElementById("resources").hidden = false;
+  document.getElementById("planner").hidden = false;
 
   document.getElementById("summary").innerHTML = `
-    <div class='metric'><span class='muted'>Học sinh</span><strong>${name}</strong><span>Lớp ${clazz}</span></div>
-    <div class='metric'><span class='muted'>Môn</span><strong>${competencyFramework[currentSubject].name}</strong><span>Mức: ${result.proficiency}</span></div>
-    <div class='metric'><span class='muted'>Điểm chẩn đoán</span><strong>${result.correct}/${result.total}</strong><span>${result.scorePct}%</span></div>
-  `;
+    <span class='pill'>Điểm: ${r.correct}/${r.total} (${r.pct}%)</span>
+    <span class='pill'>Môn: ${subjects[currentSubject].name}</span>
+    <span class='pill'>Điểm yếu: ${r.topWeak[0] || "Không rõ"}</span>`;
 
-  document.getElementById("insight").innerHTML = `<h3>Nhận định AI</h3><p>Bạn yếu tập trung ở <b>${result.topWeak.join(", ") || "không có"}</b>.</p><p>Nguyên nhân chính: <b>${labelError[result.dominantError]}</b>.</p><p><b>Can thiệp nhanh:</b> 12 phút ôn phần ${result.topWeak[0] || "nền tảng"}, sau đó 5 bài dễ.</p>`;
+  document.getElementById("insight").innerHTML = `
+    <p><b>StudyTwin AI:</b> Bạn không yếu toàn bộ chương. Bạn yếu nhất ở <b>${r.topWeak.join(", ") || "chưa xác định"}</b>.</p>
+    <p>Sai chủ yếu vì <b>${errorLabel[r.dominant]}</b>. Gợi ý: ôn 12 phút + làm 5 bài dễ ngay hôm nay.</p>`;
 
-  const adaptive = generateAdaptiveExercises(result.topWeak[0] || quizData[0].skill, result.scorePct);
-  document.getElementById("roadmap").innerHTML = `<h3>Lộ trình 7 ngày cá nhân hóa</h3><ul><li>Ngày 1-2: Ôn lý thuyết trọng tâm.</li><li>Ngày 3-4: Luyện bài mức ${result.scorePct >= 70 ? "trung bình" : "dễ"}.</li><li>Ngày 5: Mini test.</li><li>Ngày 6-7: Tăng độ khó + tự phản biện lời giải.</li></ul><h4>Bài tập AI sinh theo năng lực</h4><ul>${adaptive.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+  document.getElementById("assignmentBoard").innerHTML = `
+    <div class='row'>
+      <div class='task-col'><h4>ABC - Ưu tiên cao (A)</h4><ul><li>Ôn ${r.topWeak[0] || "kiến thức nền"} 12 phút</li><li>Làm 5 bài cơ bản</li></ul></div>
+      <div class='task-col'><h4>ABC - Ưu tiên vừa (B)</h4><ul><li>Làm 1 mini test ngày 3</li><li>Ôn flashcard 10 phút</li></ul></div>
+      <div class='task-col'><h4>XYZ - Theo thời gian</h4><ul><li>X (hôm nay): học + check-in</li><li>Y (2-3 ngày): bài nâng dần</li><li>Z (7 ngày): test lại và cập nhật</li></ul></div>
+    </div>`;
 
-  document.getElementById("mistakeTable").innerHTML = `<h3>Phân tích lỗi theo từng câu</h3><table class='table'><tr><th>Câu</th><th>Kỹ năng</th><th>Khái niệm</th><th>Kết quả</th></tr>${quizData.map((q) => { const m = result.mistakes.find((x) => x.id === q.id); const status = m ? `<span class="tag-warn">Sai - ${labelError[m.errorType]}</span>` : `<span class="tag-ok">Đúng</span>`; return `<tr><td>${q.id}</td><td>${q.skill}</td><td>${q.concept}</td><td>${status}</td></tr>`; }).join("")}</table>`;
-
-  const flashcards = buildFlashcards(result.mistakes);
-  document.getElementById("flashcards").innerHTML = `<ul>${flashcards.map((f) => `<li><b>Q:</b> ${f.q}<br><b>A:</b> ${f.a}</li>`).join("")}</ul>`;
-  document.getElementById("schedule").innerHTML = `<ul><li>Hôm nay: 12 phút + 5 bài.</li><li>+1 ngày: flashcard ôn lại.</li><li>+3 ngày: luyện dạng sai nhiều.</li><li>+7 ngày: đánh giá lại năng lực.</li></ul>`;
-  document.getElementById("mindmap").textContent = `Kế hoạch học\n├── Môn: ${competencyFramework[currentSubject].name}\n├── Điểm yếu: ${result.topWeak.join(", ") || "Không có"}\n├── Nguyên nhân: ${labelError[result.dominantError]}\n└── Mục tiêu: đạt >=80% sau 7 ngày`;
-
-  saveHistory({ name, clazz, subject: currentSubject, scorePct: result.scorePct, date: new Date().toISOString() });
-  renderHistory();
+  document.getElementById("flashcards").innerHTML = `<h4>Flashcard nhanh</h4><ul>${(r.wrong.slice(0,3).map(w=>`<li><b>${w.skill}:</b> Tránh lỗi ${errorLabel[w.err]}.</li>`)).join("") || "<li>Bạn làm rất tốt, tiếp tục duy trì!</li>"}</ul>`;
+  document.getElementById("miniRoadmap").textContent = `Roadmap 7 ngày\n- Ngày 1-2: Ôn phần yếu + 5 bài dễ\n- Ngày 3-4: Luyện trung bình\n- Ngày 5: Mini test\n- Ngày 6-7: Tăng độ khó và test lại`;
 }
 
-function generateAdaptiveExercises(skill, scorePct) {
-  const level = scorePct >= 80 ? "nâng cao" : scorePct >= 60 ? "trung bình" : "cơ bản";
-  return [
-    `Bài 1 (${level}): Luyện kỹ năng ${skill} với dữ kiện 1 bước.`,
-    `Bài 2 (${level}): Luyện kỹ năng ${skill} với dữ kiện 2 bước.`,
-    `Bài 3 (${level}): Tự giải thích vì sao chọn phương pháp.`
-  ];
-}
-
-function buildFlashcards(mistakes) {
-  if (!mistakes.length) return [{ q: "Bạn cần ôn gì tiếp theo?", a: "Tiếp tục làm bài trung bình để duy trì phong độ." }];
-  return mistakes.slice(0, 3).map((m) => ({ q: `Khái niệm: ${m.concept}?`, a: `Ôn lại kỹ năng ${m.skill}. Tránh lỗi: ${labelError[m.errorType]}.` }));
-}
-
-function saveHistory(entry) {
-  const key = "studytwin_history";
-  const old = JSON.parse(localStorage.getItem(key) || "[]");
-  old.unshift(entry);
-  localStorage.setItem(key, JSON.stringify(old.slice(0, 10)));
-}
-
-function renderHistory() {
-  const key = "studytwin_history";
-  const data = JSON.parse(localStorage.getItem(key) || "[]");
-  const host = document.getElementById("history");
-  if (!host) return;
-  host.innerHTML = data.length ? `<h3>Lịch sử 10 lần gần nhất</h3><table class='table'><tr><th>Ngày</th><th>Môn</th><th>Điểm %</th></tr>${data.map((d) => `<tr><td>${new Date(d.date).toLocaleDateString('vi-VN')}</td><td>${competencyFramework[d.subject].name}</td><td>${d.scorePct}</td></tr>`).join("")}</table>` : "";
-}
-
-document.getElementById("analyzeBtn").addEventListener("click", () => {
-  const answers = collectAnswers();
-  const unanswered = answers.filter((x) => x === null).length;
-  if (unanswered > 0) return alert(`Bạn còn ${unanswered} câu chưa trả lời.`);
-  render(analyze(answers));
-});
-
-document.getElementById("startVoice").addEventListener("click", () => {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const voiceText = document.getElementById("voiceText");
-  const voiceAnswer = document.getElementById("voiceAnswer");
-  if (!SR) return (voiceAnswer.textContent = "AI: Trình duyệt chưa hỗ trợ Speech Recognition.");
-  const recog = new SR();
-  recog.lang = "vi-VN";
-  recog.start();
-  recog.onresult = (e) => {
-    const text = e.results[0][0].transcript;
-    voiceText.textContent = `Bạn hỏi: ${text}`;
-    const answer = replyVoice(text);
-    voiceAnswer.textContent = `AI: ${answer}`;
-    const utter = new SpeechSynthesisUtterance(answer);
-    utter.lang = "vi-VN";
-    speechSynthesis.speak(utter);
-  };
-});
-
-function replyVoice(query) {
-  const q = query.toLowerCase();
-  if (q.includes("ôn") || q.includes("hôm nay")) return "Hôm nay em nên ôn 12 phút điểm yếu nhất và làm 5 bài cơ bản.";
-  if (q.includes("điểm yếu")) return "Em xem mục nhận định AI và bảng lỗi theo từng câu để biết kỹ năng cần ưu tiên.";
-  return "Em hoàn thành mini test ngày 5 để hệ thống cập nhật lộ trình tiếp theo.";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const selector = document.getElementById("subject");
-  selector.innerHTML = Object.entries(competencyFramework).map(([k, v]) => `<option value='${k}'>${v.name}</option>`).join("");
-  selector.addEventListener("change", (e) => {
-    currentSubject = e.target.value;
-    renderQuiz();
+function setupStreak() {
+  const badge = document.getElementById("streakBadge");
+  const key = "studytwin_streak";
+  const obj = JSON.parse(localStorage.getItem(key) || '{"count":0,"last":""}');
+  badge.innerHTML = `Streak hiện tại: <b>${obj.count} ngày</b>`;
+  document.getElementById("checkinBtn").addEventListener("click", () => {
+    const today = new Date().toISOString().slice(0,10);
+    const saved = JSON.parse(localStorage.getItem(key) || '{"count":0,"last":""}');
+    if (saved.last === today) return alert("Bạn đã điểm danh hôm nay rồi 🎉");
+    const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    const count = saved.last === yesterday ? saved.count + 1 : 1;
+    localStorage.setItem(key, JSON.stringify({count, last: today}));
+    badge.innerHTML = `Streak hiện tại: <b>${count} ngày</b>`;
+    alert("+1 streak! Tiếp tục giữ nhịp học nhé 🔥");
   });
-  renderQuiz();
-  renderHistory();
-});
+}
+
+document.getElementById("saveProfile").addEventListener("click", ()=> alert("Đã lưu hồ sơ học sinh ✅"));
+document.getElementById("analyzeBtn").addEventListener("click", ()=> renderReport(analyze()));
+
+document.addEventListener("DOMContentLoaded", () => { initSubjects(); renderQuiz(); setupStreak(); });
