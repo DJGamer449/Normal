@@ -1,17 +1,19 @@
-# StudyTwin AI - Personalized Learning Platform
+# StudyTwin AI - Personalized Learning Platform (AI-enabled)
 
-Phiên bản này tập trung đúng các tính năng hội đồng chấm đồ án quan tâm:
-- Kiểm tra năng lực đầu vào theo môn/chủ đề (Toán, Anh, Tin, Lý, Lập trình).
-- Bản đồ năng lực cá nhân theo 7 trục kỹ năng.
-- AI phân tích lỗi sai theo nguyên nhân.
-- Lộ trình học 7 ngày cá nhân hóa.
-- Adaptive learning (tăng/giảm độ khó theo kết quả).
-- Flashcard + nhắc ôn 1/3/7 ngày (thể hiện trong roadmap).
-- Chat với StudyTwin.
-- Learning DNA.
-- Teacher overview (demo lớp học: lỗi phổ biến/nhóm yếu).
+Đã tích hợp AI để:
+- Tự động tạo câu hỏi theo môn/chủ đề và mức độ.
+- Tối ưu hóa câu hỏi theo kết quả gần nhất.
+- Tạo kết luận tổng quát sau mỗi bài kiểm tra (điểm mạnh/yếu, lỗi chính, ưu tiên hôm nay, kế hoạch 7 ngày).
 
-## Deploy server
-- `pip install flask`
-- `python3 server.py`
-- Deploy production: Gunicorn + Nginx.
+## Cấu hình AI
+- `OPENAI_API_KEY`: API key.
+- `OPENAI_MODEL` (tuỳ chọn): mặc định `gpt-4.1-mini`.
+
+## Chạy server
+```bash
+pip install flask
+export OPENAI_API_KEY=your_key
+python3 server.py
+```
+
+Nếu chưa có API key, hệ thống dùng fallback mẫu để demo.

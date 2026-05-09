@@ -1,23 +1,26 @@
-const subjects={math:{name:'Toán lớp 10'},english:{name:'Tiếng Anh'},cs:{name:'Tin học'},physics:{name:'Vật lý'},coding:{name:'Lập trình cơ bản'}};
-const questionBank={math:[['Hàm số y=x^2 có là hàm số?',1,['Không','Có']],['Điều kiện mẫu số khác?',1,['=0','≠0']],['20% của 200?',1,['30','40']],['Bước đầu giải bài?',1,['Đoán','Đọc điều kiện']],['x>1 và x<3 ?',0,['1<x<3','x>3']]],english:[['She __ to school',1,['go','goes']],['Synonym happy',0,['glad','sad']],['If I __ rich',1,['am','were']],['Read question means',0,['find keyword','skip']],['Verb + s/es for',0,['he/she/it','I/you']]],cs:[['CPU là?',0,['bộ xử lý','ram']],['Binary của 2?',1,['11','10']],['HTML là?',0,['markup','database']],['Bug là?',0,['lỗi','tính năng']],['Loop là?',0,['vòng lặp','biến']]],physics:[['Đơn vị lực',0,['N','J']],['F=ma?',0,['đúng','sai']],['1kN=',1,['100N','1000N']],['Ma sát tăng thì',1,['dễ hơn','khó hơn']],['v=s/t?',0,['đúng','sai']]],coding:[['if dùng để?',0,['rẽ nhánh','lặp']],['for là?',1,['hàm','vòng lặp']],['== so sánh?',0,['đúng','sai']],['bug fix là?',0,['sửa lỗi','thêm lỗi']],['input là?',0,['nhập dữ liệu','xuất']] ]};
-let token='',current='math',lastResult=null;
+const subjects={math:'Toán lớp 10',english:'Tiếng Anh',cs:'Tin học',physics:'Vật lý',coding:'Lập trình cơ bản'};
+let token='',current='math',quizData=[],lastResult=null;
 const api=async(p,m='GET',b=null)=>(await fetch(p,{method:m,headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},body:b?JSON.stringify(b):null})).json();
-function renderSubjects(){subject.innerHTML=Object.entries(subjects).map(([k,v])=>`<option value='${k}'>${v.name}</option>`).join('');subject.onchange=e=>{current=e.target.value;renderQuiz();};}
-function renderQuiz(){quiz.innerHTML=questionBank[current].map((q,i)=>`<div class='question'><b>${i+1}.</b> ${q[0]}<label class='answer'><input type='radio' name='q${i}' value='0'>${q[2][0]}</label><label class='answer'><input type='radio' name='q${i}' value='1'>${q[2][1]}</label></div>`).join('');}
-function analyze(){let c=0,errors=[];questionBank[current].forEach((q,i)=>{const p=document.querySelector(`input[name='q${i}']:checked`);if(p&&Number(p.value)===q[1])c++;else errors.push(i);});
-const pct=Math.round(c/questionBank[current].length*100); const dominant=pct<60?'chưa hiểu kiến thức':pct<80?'đọc thiếu dữ kiện':'cẩn thận bước giải';
-const weak=pct<60?'Kiến thức nền tảng':pct<80?'Đọc hiểu đề':'Áp dụng công thức';
-const map={knowledge:Math.max(40,pct-5),reading:Math.max(35,pct-15),logic:Math.min(95,pct+10),apply:Math.max(30,pct-20),speed:Math.max(45,pct-10),memory:Math.max(50,pct-8),careful:Math.max(35,pct-18)};
-return {pct,dominant,weak,map};}
-function renderAll(r){lastResult=r; report.innerHTML=`<h4>AI phân tích lỗi sai</h4><p>Bạn nắm tốt một phần nhưng yếu ở <b>${r.weak}</b>. Sai chủ yếu do <b>${r.dominant}</b>.</p><h4>Lộ trình 7 ngày</h4><ol><li>Ngày 1: Ôn khái niệm.</li><li>Ngày 2: 5 bài nhận diện.</li><li>Ngày 3: Luyện lỗi sai thường gặp.</li><li>Ngày 4: Bài trung bình.</li><li>Ngày 5: Flashcard.</li><li>Ngày 6: Bài tổng hợp.</li><li>Ngày 7: Kiểm tra lại.</li></ol><p><b>Adaptive:</b> ${r.pct>=80?'Tăng độ khó lên trung bình/nâng cao.':'Quay lại bài nền tảng trước khi tăng khó.'}</p>`;
-skillMap.innerHTML=`<tr><th>Kỹ năng</th><th>Mức độ</th></tr>${[['Kiến thức nền',r.map.knowledge],['Đọc hiểu đề',r.map.reading],['Tư duy logic',r.map.logic],['Áp dụng công thức',r.map.apply],['Tốc độ làm bài',r.map.speed],['Ghi nhớ',r.map.memory],['Cẩn thận',r.map.careful]].map(x=>`<tr><td>${x[0]}</td><td>${x[1]}%</td></tr>`).join('')}`;
-dna.innerHTML=`<p><b>Learning DNA:</b><br>Điểm mạnh: ${r.map.logic>=80?'tư duy logic':'kiên trì luyện tập'}<br>Điểm yếu: ${r.weak}<br>Lỗi thường gặp: ${r.dominant}<br>Phong cách hợp: học từng bước + ví dụ trực quan<br>Ưu tiên hôm nay: luyện 5 câu đọc điều kiện đề trước.</p>`;
-api('/api/attempt','POST',{subject:current,score_pct:r.pct,weak_skill:r.weak,dominant_error:r.dominant});}
-chatBtn.onclick=()=>{const q=chatInput.value.toLowerCase(); if(!lastResult){chatOut.textContent='Hãy làm bài test trước nhé.';return;} if(q.includes('hôm nay')) chatOut.textContent='Hôm nay: ôn 12 phút phần yếu nhất + 5 bài cơ bản.'; else if(q.includes('yếu')) chatOut.textContent=`Em yếu nhất ở ${lastResult.weak}.`; else if(q.includes('5 bài')) chatOut.textContent='Đã tạo gợi ý: 5 bài cùng dạng từ dễ đến trung bình.'; else chatOut.textContent='Mình sẽ giải thích lại dễ hiểu hơn theo từng bước nhé.';};
-async function loadMe(){const me=await api('/api/me'); if(!me.ok)return; authCard.hidden=true; appCard.hidden=false; hello.textContent=`Xin chào ${me.user.full_name} (${me.user.student_class})`; streakBadge.textContent=`🔥 ${me.streak.count} ngày`;  history.innerHTML='<ul>'+me.history.map(h=>`<li>${h.subject}: ${h.score_pct}% - yếu: ${h.weak_skill}</li>`).join('')+'</ul>'; const t=await api('/api/teacher/overview'); teacherOverview.innerHTML='<ul>'+t.insights.slice(0,5).map(i=>`<li>${i.subject} | ${i.weak_skill} | ${i.dominant_error} (${i.n})</li>`).join('')+'</ul>';}
-registerBtn.onclick=async()=>{const r=await api('/api/register','POST',{username:username.value,password:password.value,full_name:fullName.value,student_class:studentClass.value}); authMsg.textContent=r.ok?'Đăng ký thành công':'Lỗi: '+r.error;};
-loginBtn.onclick=async()=>{const r=await api('/api/login','POST',{username:username.value,password:password.value}); if(!r.ok){authMsg.textContent=r.error;return;} token=r.token; loadMe();};
-checkinBtn.onclick=async()=>{const r=await api('/api/checkin','POST',{date:new Date().toISOString().slice(0,10)}); streakBadge.textContent=`🔥 ${r.count} ngày`;};
-logoutBtn.onclick=()=>{token=''; appCard.hidden=true; authCard.hidden=false; authMsg.textContent='Bạn đã đăng xuất.';};
+
+function renderSubjects(){subject.innerHTML=Object.entries(subjects).map(([k,v])=>`<option value='${k}'>${v}</option>`).join('');subject.onchange=e=>{current=e.target.value;generateQuiz();};}
+async function generateQuiz(){
+  quiz.innerHTML='⏳ AI đang tạo câu hỏi...';
+  const r=await api('/api/ai/generate-quiz','POST',{subject:subjects[current],num_questions:5,level:'cơ bản'});
+  quizData=r.questions||[];
+  quiz.innerHTML=quizData.map((q,i)=>`<div class='question'><b>${i+1}.</b> ${q.question}${q.options.map((opt,j)=>`<label class='answer'><input type='radio' name='q${i}' value='${j}'> ${opt}</label>`).join('')}</div>`).join('');
+}
+function analyze(){let c=0,wrong=[];quizData.forEach((q,i)=>{const p=document.querySelector(`input[name='q${i}']:checked`);if(p&&Number(p.value)===q.answer_index)c++;else wrong.push(q)});const pct=Math.round(c/(quizData.length||1)*100);return {pct,wrong,subject:subjects[current]};}
+async function renderAll(r){
+  const ai=await api('/api/ai/summary','POST',{subject:r.subject,score:r.pct,wrong:r.wrong});
+  lastResult={...r, ...ai};
+  report.innerHTML=`<h4>🤖 Kết luận tổng quát từ AI</h4><p>${ai.summary}</p><p><b>Điểm yếu nhất:</b> ${ai.weakest_skill} | <b>Lỗi chính:</b> ${ai.dominant_error}</p><h4>📅 Kế hoạch 7 ngày</h4><ol><li>Ngày 1: Ôn khái niệm lõi.</li><li>Ngày 2: 5 bài nhận diện.</li><li>Ngày 3: Sửa lỗi thường gặp.</li><li>Ngày 4: Bài trung bình.</li><li>Ngày 5: Flashcard.</li><li>Ngày 6: Bài tổng hợp.</li><li>Ngày 7: Test lại.</li></ol>`;
+  await api('/api/attempt','POST',{subject:current,score_pct:r.pct,weak_skill:ai.weakest_skill,dominant_error:ai.dominant_error});
+}
+chatBtn.onclick=()=>{const q=chatInput.value.toLowerCase();if(!lastResult){chatOut.textContent='Hãy làm bài kiểm tra trước nhé.';return;}if(q.includes('hôm nay'))chatOut.textContent=`Hôm nay ưu tiên: ${lastResult.weakest_skill}.`;else if(q.includes('yếu'))chatOut.textContent=`Bạn yếu nhất ở ${lastResult.weakest_skill}.`;else chatOut.textContent='Mình đã tối ưu lại lộ trình, bạn bám kế hoạch 7 ngày nhé.';};
+async function loadMe(){const me=await api('/api/me');if(!me.ok)return;authCard.hidden=true;appCard.hidden=false;hello.textContent=`👋 Xin chào ${me.user.full_name} (${me.user.student_class})`;streakBadge.textContent=`🔥 ${me.streak.count} ngày`;history.innerHTML='<ul>'+me.history.map(h=>`<li>${h.subject}: ${h.score_pct}% | yếu: ${h.weak_skill}</li>`).join('')+'</ul>';generateQuiz();}
+registerBtn.onclick=async()=>{const r=await api('/api/register','POST',{username:username.value,password:password.value,full_name:fullName.value,student_class:studentClass.value});authMsg.textContent=r.ok?'✅ Đăng ký thành công':'❌ '+r.error;};
+loginBtn.onclick=async()=>{const r=await api('/api/login','POST',{username:username.value,password:password.value});if(!r.ok){authMsg.textContent=r.error;return;}token=r.token;loadMe();};
+logoutBtn.onclick=()=>{token='';appCard.hidden=true;authCard.hidden=false;authMsg.textContent='Đã đăng xuất.';};
+checkinBtn.onclick=async()=>{const r=await api('/api/checkin','POST',{date:new Date().toISOString().slice(0,10)});streakBadge.textContent=`🔥 ${r.count} ngày`;};
 analyzeBtn.onclick=()=>renderAll(analyze());
-document.addEventListener('DOMContentLoaded',()=>{renderSubjects();renderQuiz();});
+document.addEventListener('DOMContentLoaded',()=>{renderSubjects();});
