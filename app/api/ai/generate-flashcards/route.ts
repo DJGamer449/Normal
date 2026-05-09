@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server';
+export async function POST(){ return NextResponse.json({ flashcards:[{front:'Điều kiện xác định của phân thức là gì?',back:'Mẫu thức phải khác 0.',reviewAfterDays:1,sourceMistake:'Bỏ qua điều kiện mẫu khác 0.'},{front:'Khi nào đổi dấu bất đẳng thức?',back:'Khi nhân/chia với số âm.',reviewAfterDays:3,sourceMistake:'Quên đổi dấu'},{front:'Kiểm tra nghiệm cần gì?',back:'Thế ngược lại điều kiện ban đầu.',reviewAfterDays:7,sourceMistake:'Không thử lại nghiệm'}] }); }

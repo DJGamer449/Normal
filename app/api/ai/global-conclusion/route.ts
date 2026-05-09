@@ -1,0 +1,2 @@
+import { NextResponse } from 'next/server';
+export async function POST(){ return NextResponse.json({overallProgress:'Tiến bộ ổn định theo tuần',trend:'improving',mostImprovedSkills:['Tư duy logic'],persistentWeaknesses:['Đọc điều kiện'],repeatedMistakes:['Bỏ sót dữ kiện'],studyStyleConclusion:'Phù hợp học theo chu kỳ ngắn + luyện tập ngay',next7DayPlan:[{day:'Day 1',goal:'Ôn điều kiện xác định',tasks:['10 phút lý thuyết','5 câu dễ']}],teacherNote:'Giao bài đọc hiểu đề',parentFriendlySummary:'Con tiến bộ tốt, cần cẩn thận hơn khi đọc đề.'}); }

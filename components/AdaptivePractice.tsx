@@ -1,0 +1,1 @@
+export default function AdaptivePractice(){return <section className='rounded-2xl border bg-white p-4'><h3 className='font-semibold'>AdaptivePractice</h3><p className='text-sm text-gray-600 mt-1'>Module sẵn sàng cho demo competition.</p></section>}

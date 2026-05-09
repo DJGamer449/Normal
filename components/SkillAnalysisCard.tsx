@@ -1,0 +1,3 @@
+const skills=[['Tư duy logic',85],['Áp dụng công thức',42],['Đọc hiểu đề bài',68],['Tính toán nhanh',91]] as const;
+const color=(s:number)=>s>=80?'bg-green-500':s>=60?'bg-amber-500':'bg-red-500';
+export default function SkillAnalysisCard(){return <section className='rounded-2xl border bg-gray-50 p-4'><h3 className='font-semibold'>Phân tích Kỹ năng</h3><div className='mt-3 space-y-3'>{skills.map(([n,s])=><div key={n}><div className='flex justify-between text-sm'><span>{n}</span><span>{s}%</span></div><div className='h-2 rounded bg-gray-200'><div className={`h-2 rounded ${color(s)}`} style={{width:`${s}%`}}/></div></div>)}</div></section>}

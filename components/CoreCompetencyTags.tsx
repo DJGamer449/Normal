@@ -1,0 +1,2 @@
+const tags=['Foundational Knowledge','Syntax Application','Memory','Carefulness','Logical Thinking'];
+export default function CoreCompetencyTags(){return <section className='rounded-2xl border bg-gray-50 p-4'><h3 className='font-semibold'>Năng lực cốt lõi</h3><div className='mt-3 flex flex-wrap gap-2'>{tags.map(t=><span key={t} className='rounded-full border px-3 py-1 text-xs bg-white'>{t}</span>)}</div></section>}
