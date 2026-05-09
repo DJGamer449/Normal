@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyTwin AI | Trợ lý học tập cá nhân hoá</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <h1>StudyTwin AI</h1>
+      <p>Phân tích năng lực học tập theo từng kỹ năng và đề xuất lộ trình ôn tập cá nhân.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Hồ sơ học sinh</h2>
+      <div class="grid-2">
+        <label>Họ và tên <input id="studentName" placeholder="Nguyễn Văn A" /></label>
+        <label>Lớp <input id="studentClass" placeholder="10A1" /></label>
+        <label>Môn học <select id="subject"></select></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Bài kiểm tra chẩn đoán nhanh</h2>
+        <span class="badge">5 câu • 3-5 phút</span>
+      </div>
+      <div id="quiz"></div>
+      <div class="actions">
+        <button id="analyzeBtn">Phân tích với StudyTwin AI</button>
+      </div>
+    </section>
+
+    <section class="card" id="report" hidden>
+      <h2>Báo cáo cá nhân hóa</h2>
+      <div id="summary" class="grid-3"></div>
+      <div id="insight" class="panel"></div>
+      <div id="roadmap" class="panel"></div>
+      <div id="mistakeTable"></div>
+    </section>
+
+    <section class="card" id="resources" hidden>
+      <h2>Tài nguyên AI tạo tự động</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Flashcard</h3>
+          <div id="flashcards"></div>
+        </div>
+        <div>
+          <h3>Lịch ôn tập (Spaced Repetition)</h3>
+          <div id="schedule"></div>
+        </div>
+      </div>
+      <h3>Sơ đồ tư duy</h3>
+      <pre id="mindmap"></pre>
+    </section>
+
+    <section class="card" id="history"></section>
+
+    <section class="card">
+      <h2>Hỏi đáp giọng nói tiếng Việt</h2>
+      <p class="muted">Ví dụ: “Hôm nay em nên ôn gì?”</p>
+      <button id="startVoice">🎤 Bắt đầu nghe</button>
+      <p id="voiceText" class="muted">Chưa có câu hỏi.</p>
+      <p id="voiceAnswer">AI: ...</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

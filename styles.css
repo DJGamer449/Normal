@@ -1,0 +1,41 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #fff;
+  --text: #1f2937;
+  --primary: #1d4ed8;
+  --primary-soft: #dbeafe;
+  --ok: #166534;
+  --warn: #b45309;
+  --border: #e5e7eb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Inter, system-ui, Arial, sans-serif; color: var(--text); background: var(--bg); }
+.hero { background: linear-gradient(120deg, #1d4ed8, #2563eb); color: #fff; padding: 32px 16px; }
+.hero__content { max-width: 980px; margin: 0 auto; }
+.hero h1 { margin: 0 0 8px; }
+.container { max-width: 980px; margin: 18px auto; padding: 0 12px 24px; display: grid; gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.section-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.badge { font-size: 12px; background: var(--primary-soft); color: #1e40af; padding: 4px 10px; border-radius: 999px; }
+.grid-2, .grid-3 { display: grid; gap: 10px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+label { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+input { border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 14px; }
+.question { background: #f9fbff; border: 1px solid #e6edff; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.question h4 { margin: 0 0 8px; }
+.answer { display: block; margin: 5px 0; }
+button { border: 0; border-radius: 8px; background: var(--primary); color: #fff; padding: 10px 14px; cursor: pointer; }
+.actions { margin-top: 10px; }
+.metric { border: 1px solid var(--border); border-radius: 10px; padding: 10px; background: #fcfdff; }
+.metric strong { display:block; font-size: 20px; }
+.panel { margin-top: 10px; padding: 12px; background: #f9fbff; border: 1px solid #e6edff; border-radius: 10px; }
+ul { margin: 8px 0; padding-left: 18px; }
+pre { background: #f9fbff; border: 1px solid #e6edff; border-radius: 10px; padding: 12px; white-space: pre-wrap; }
+.muted { color: #6b7280; }
+.table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.table th, .table td { border: 1px solid var(--border); padding: 8px; text-align: left; font-size: 14px; }
+.tag-ok { color: var(--ok); font-weight: 600; }
+.tag-warn { color: var(--warn); font-weight: 600; }
+
+select { border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 14px; background: white; }
