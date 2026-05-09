@@ -1,10 +1,17 @@
-:root { --bg:#f5f8ff; --card:#fff; --primary:#2563eb; --text:#1f2937; --border:#dbe4f0; }
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text)}
-header{background:#2563eb;color:#fff;padding:20px;text-align:center}
-.container{max-width:960px;margin:16px auto;padding:0 12px;display:grid;gap:12px}
-.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input,select,button{padding:10px;border-radius:8px;border:1px solid var(--border)}
-button{background:var(--primary);color:#fff;border:none;cursor:pointer}
-.question{margin:8px 0;padding:10px;background:#f8fbff;border-radius:8px}
-.answer{display:block;margin:4px 0}
+:root{--bg:#eef4ff;--card:#fff;--primary:#2563eb;--text:#1f2937;--border:#dbe4f0;--muted:#6b7280}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,#eef4ff,#f9fbff);color:var(--text)}
+header{background:linear-gradient(120deg,#2563eb,#3b82f6);color:#fff;padding:24px;text-align:center;box-shadow:0 8px 22px rgba(37,99,235,.25)}
+.container{max-width:1020px;margin:18px auto;padding:0 14px;display:grid;gap:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 8px 20px rgba(15,23,42,.05)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.topbar{justify-content:space-between;background:#f8fbff;border:1px dashed #c8d8ff;padding:10px;border-radius:10px}
+input,select,button{padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:14px}
+button{background:var(--primary);color:#fff;border:none;cursor:pointer;font-weight:600}
+button:hover{opacity:.95}
+.ghost{background:#fff;color:#1e40af;border:1px solid #c7d7ff}
+.question{margin:10px 0;padding:12px;background:#f8fbff;border:1px solid #e5edff;border-radius:10px}
+.answer{display:block;margin:6px 0}
+.table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+.table th,.table td{border:1px solid #e8edf5;padding:8px;text-align:left}
+p{line-height:1.5}
