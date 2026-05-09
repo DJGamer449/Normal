@@ -5,19 +5,18 @@ services:
     volumes: ["ollama_data:/root/.ollama"]
     environment: ["OLLAMA_HOST=0.0.0.0:11434"]
     healthcheck:
-      test: ["CMD", "sh", "-c", "wget -qO- http://localhost:11434/api/tags >/dev/null"]
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 30
   web:
     build: .
     ports: ["3000:3000"]
-    depends_on:
-      ollama:
-        condition: service_healthy
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
       - OLLAMA_MODEL=${OLLAMA_MODEL}
       - NEXT_PUBLIC_APP_NAME=StudyTwin AI
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 volumes:
   ollama_data:
