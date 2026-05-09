@@ -1,17 +1,15 @@
-# StudyTwin AI (Phiên bản thân thiện người dùng)
+# StudyTwin AI - Server-based personalized web app
 
-Phiên bản này được tối ưu lại để **dễ tiếp cận**, UI rõ ràng và có yếu tố tạo động lực học.
+Bạn host trên server để học sinh tạo **tài khoản riêng**, đăng nhập và có dữ liệu cá nhân hóa.
 
-## Điểm mới
-- UI đơn giản, dễ dùng cho học sinh.
-- Mini game **Keep Streak** (điểm danh mỗi ngày).
-- Báo cáo ngắn gọn, dễ hiểu sau bài test 5 câu.
-- Bảng kế hoạch theo kiểu **ABC / XYZ** để học sinh biết cần làm gì trước.
-- Flashcard nhanh + roadmap 7 ngày.
-- Hỗ trợ 2 môn: Toán, Tiếng Anh.
+## Có gì trong phiên bản này
+- Đăng ký / đăng nhập tài khoản học sinh.
+- Lưu hồ sơ cá nhân (họ tên, lớp).
+- Keep streak theo từng tài khoản.
+- Lưu lịch sử điểm theo từng tài khoản.
+- Quiz + báo cáo + kế hoạch ABC/XYZ.
 
-## Chạy
-```bash
-python3 -m http.server 8080
-```
-Mở `http://localhost:8080`.
+## Chạy trên server
+1. Cài dependency: `pip install flask`
+2. Chạy app: `python3 server.py`
+3. Deploy lên VPS/cloud với Nginx + Gunicorn (khuyến nghị production).

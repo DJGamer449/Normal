@@ -3,56 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyTwin AI - Học vui, học đúng trọng tâm</title>
+  <title>StudyTwin AI - Cá nhân hóa theo tài khoản</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>🌟 StudyTwin AI</h1>
-    <p>UI thân thiện • Lộ trình rõ ràng • Có động lực học mỗi ngày</p>
-  </header>
+<header><h1>StudyTwin AI</h1><p>Đăng nhập để cá nhân hóa theo từng học sinh</p></header>
+<main class="container">
+  <section class="card" id="authCard">
+    <h2>Tài khoản cá nhân</h2>
+    <div class="row">
+      <input id="username" placeholder="Tên đăng nhập" />
+      <input id="password" type="password" placeholder="Mật khẩu" />
+      <input id="fullName" placeholder="Họ tên" />
+      <input id="studentClass" placeholder="Lớp" />
+      <button id="registerBtn">Đăng ký</button>
+      <button id="loginBtn">Đăng nhập</button>
+    </div>
+    <p id="authMsg"></p>
+  </section>
 
-  <main class="container">
-    <section class="card row">
-      <label>Tên học sinh <input id="studentName" placeholder="Ví dụ: Minh" /></label>
-      <label>Lớp <input id="studentClass" placeholder="Ví dụ: 9A2" /></label>
+  <section class="card" id="appCard" hidden>
+    <div class="row">
+      <div id="hello"></div>
       <label>Môn <select id="subject"></select></label>
-      <button id="saveProfile">Lưu hồ sơ</button>
-    </section>
-
-    <section class="card">
-      <h2>🔥 Keep Streak (Mini game động lực)</h2>
-      <div class="row">
-        <div id="streakBadge">Streak hiện tại: <b>0 ngày</b></div>
-        <button id="checkinBtn">Điểm danh hôm nay</button>
-      </div>
-      <small>Mỗi ngày học xong bấm điểm danh để tăng streak.</small>
-    </section>
-
-    <section class="card">
-      <h2>🧠 Bài test nhanh (5 câu)</h2>
-      <div id="quiz"></div>
-      <button id="analyzeBtn">Phân tích kết quả</button>
-    </section>
-
-    <section class="card" id="report" hidden>
-      <h2>📊 Báo cáo dễ hiểu</h2>
-      <div id="summary"></div>
-      <div id="insight"></div>
-    </section>
-
-    <section class="card" id="planner" hidden>
-      <h2>🗂️ Bản phân công ABC/XYZ (Kế hoạch tuần)</h2>
-      <div id="assignmentBoard"></div>
-    </section>
-
-    <section class="card" id="resources" hidden>
-      <h2>🎯 Tài nguyên cá nhân</h2>
-      <div id="flashcards"></div>
-      <pre id="miniRoadmap"></pre>
-    </section>
-  </main>
-
-  <script src="app.js"></script>
+      <div id="streakBadge">Streak: 0</div>
+      <button id="checkinBtn">Điểm danh</button>
+    </div>
+    <div id="quiz"></div>
+    <button id="analyzeBtn">Phân tích</button>
+    <div id="report"></div>
+    <div id="history"></div>
+  </section>
+</main>
+<script src="app.js"></script>
 </body>
 </html>
