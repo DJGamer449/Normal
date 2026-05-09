@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from 'next/server';import { z } from 'zod';import { callOllamaJson } from '@/lib/ollama';import { analyzePrompt, SYSTEM_JSON } from '@/lib/ai-prompts';import { analysisSchema } from '@/lib/types';import { fallbackAnalysis } from '@/lib/fallbacks';
+const inSchema=z.object({studentName:z.string(),subject:z.string(),topic:z.string(),questions:z.array(z.any()),answers:z.array(z.any()),previousSessions:z.array(z.any()).default([])});
+export async function POST(req:NextRequest){const input=inSchema.parse(await req.json());const out=await callOllamaJson([{role:'system',content:SYSTEM_JSON},{role:'user',content:analyzePrompt(input)}],analysisSchema,fallbackAnalysis);return NextResponse.json(out)}

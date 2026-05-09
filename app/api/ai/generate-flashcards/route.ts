@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from 'next/server';import { z } from 'zod';import { callOllamaJson } from '@/lib/ollama';import { SYSTEM_JSON } from '@/lib/ai-prompts';
+const schema=z.object({flashcards:z.array(z.object({front:z.string(),back:z.string(),reviewAfterDays:z.union([z.literal(1),z.literal(3),z.literal(7)]),sourceMistake:z.string()}))});
+export async function POST(req:NextRequest){const input=await req.json();const fallback={flashcards:[{front:'Khi nào mẫu số hợp lệ?',back:'Mẫu số phải khác 0.',reviewAfterDays:1,sourceMistake:'Sai điều kiện'}]};const out=await callOllamaJson([{role:'system',content:SYSTEM_JSON},{role:'user',content:`Tạo flashcards SRS 1-3-7 từ: ${JSON.stringify(input)}`}],schema,fallback);return NextResponse.json(out)}

@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Page(){return <div className='space-y-4'><h1 className='text-3xl font-bold'>StudyTwin AI</h1><p>Trợ lý học tập cá nhân hóa với Learning DNA.</p><div className='grid gap-3 md:grid-cols-2'>{['setup','test','result','dna','adaptive','flashcards','roadmap','chat','teacher'].map(p=><Link className='card hover:border-cyan-400' key={p} href={`/${p}`}>Trang {p}</Link>)}</div></div>}
