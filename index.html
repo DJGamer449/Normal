@@ -1,0 +1,14 @@
+<!doctype html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>StudyTwin AI</title><link rel="stylesheet" href="styles.css"></head><body>
+<header><h1>StudyTwin AI</h1><p>Learning DNA - cá nhân hoá sâu cho từng học sinh</p></header>
+<main class="container">
+<section class="card" id="authCard"><h2>Đăng ký / Đăng nhập</h2><div class="row"><input id="username" placeholder="username"><input id="password" type="password" placeholder="password"><input id="fullName" placeholder="Họ tên"><input id="studentClass" placeholder="Lớp"><button id="registerBtn">Đăng ký</button><button id="loginBtn">Đăng nhập</button></div><p id="authMsg"></p></section>
+<section class="card" id="appCard" hidden>
+<div class="row topbar"><div id="hello">👋 Xin chào</div><select id="subject"></select><button id="checkinBtn">🔥 Check-in streak</button><div id="streakBadge">🔥 0 ngày</div><button id="logoutBtn" class="ghost">🚪 Đăng xuất</button></div>
+<h3>🧪 1) Kiểm tra năng lực đầu vào (5-10 câu)</h3><div id="quiz"></div><button id="analyzeBtn">Phân tích AI</button>
+<div id="report"></div>
+<h3>🗺️ 2) Bản đồ năng lực cá nhân</h3><table id="skillMap" class="table"></table>
+<h3>🧬 3) Learning DNA</h3><div id="dna"></div>
+<h3>💬 4) Chat với StudyTwin</h3><div class="row"><input id="chatInput" placeholder="Hôm nay em nên học gì?"><button id="chatBtn">Gửi</button></div><p id="chatOut"></p>
+<h3>📈 5) Lịch sử cá nhân</h3><div id="history"></div>
+<h3>👩‍🏫 6) Teacher Overview (demo)</h3><div id="teacherOverview"></div>
+</section></main><script src="app.js"></script></body></html>
