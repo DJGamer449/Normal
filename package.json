@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest run"
+    "test": "vitest run",
+    "setup:ollama": "bash scripts/setup-ollama.sh",
+    "dev:full": "npm run setup:ollama && next dev"
   },
   "dependencies": {
     "next": "15.3.2",
