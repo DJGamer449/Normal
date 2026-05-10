@@ -1,0 +1,1 @@
+import { NextResponse } from 'next/server'; export async function POST(){return NextResponse.json({strategy:'Tập trung củng cố kỹ năng yếu với câu hỏi dễ hơn',targetSkills:['Áp dụng công thức'],difficultyPlan:'3 dễ, 2 trung bình',questions:[]});}

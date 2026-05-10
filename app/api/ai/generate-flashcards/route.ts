@@ -1,0 +1,1 @@
+import { NextResponse } from 'next/server'; export async function POST(){return NextResponse.json({flashcards:[{front:'Điều kiện xác định của phân thức là gì?',back:'Mẫu thức phải khác 0.',reviewAfterDays:1,sourceMistake:'Bỏ qua điều kiện mẫu khác 0.'}]});}
