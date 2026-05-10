@@ -1,0 +1,1 @@
+import { NextResponse } from 'next/server'; import { callOllamaText } from '@/lib/ollama'; export async function POST(req:Request){const b=await req.json();const text=await callOllamaText([{role:'system',content:'Bạn là StudyTwin AI.'},{role:'user',content:b.message||'Hôm nay em nên học gì?'}]);return NextResponse.json({reply:text});}

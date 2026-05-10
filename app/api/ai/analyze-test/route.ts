@@ -1,0 +1,1 @@
+import { NextResponse } from 'next/server'; import { analyzeLocal } from '@/lib/analyzer'; export async function POST(req:Request){const b=await req.json(); return NextResponse.json(analyzeLocal(b));}

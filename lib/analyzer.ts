@@ -1,0 +1,8 @@
+import { type z } from 'zod';
+import { analyzeResponseSchema } from './schemas';
+export function analyzeLocal(input:any): z.infer<typeof analyzeResponseSchema>{
+  const total=input.questions.length||1;
+  const wrong=input.answers.filter((a:any)=>{const q=input.questions.find((x:any)=>x.id===a.questionId);return !q||q.correctIndex!==a.selectedIndex;});
+  const score=Math.round(((total-wrong.length)/total)*100);
+  return {score,level:score>85?'strong':score>70?'good':score>50?'developing':'beginner',summary:"Bạn không yếu toàn bộ chương. Bạn gặp khó khăn cụ thể ở bước 'Biến đổi biểu thức' và 'Đọc điều kiện'.",notWeakInWholeChapter:true,specificWeakness:'Biến đổi biểu thức, Đọc điều kiện',skillScores:[{skill:'Tư duy logic',score:85,comment:'Khá tốt'},{skill:'Áp dụng công thức',score:42,comment:'Cần luyện tập'}],competencyMap:[{competency:'logical_thinking',score:80,comment:'Ổn'},{competency:'formula_or_syntax_application',score:45,comment:'Cần cải thiện'}],mistakeAnalysis:wrong.map((w:any)=>({questionId:w.questionId,mistakeCategory:'wrong_formula_or_syntax',reason:'Chọn công thức chưa phù hợp',correctiveFeedback:'Ôn lại mẫu dạng bài trước khi giải'})),learningDNA:{strongPoints:['Tốc độ tính toán'],weakPoints:['Đọc điều kiện'],commonMistakes:['Thiếu điều kiện xác định'],learningStyle:'Học tốt qua ví dụ ngắn',priorityTopic:input.topic||'Hàm số',todaySuggestion:'Dành 12 phút ôn tập phần A, sau đó thực hiện 5 câu hỏi mức độ Dễ để củng cố.'},nextQuestionStrategy:{difficulty:score<60?'easier':'same',targetSkills:['Áp dụng công thức','Đọc hiểu đề bài'],reason:'Tối ưu hoá theo lỗi gần nhất'}};
+}
